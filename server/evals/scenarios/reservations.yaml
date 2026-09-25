@@ -1,0 +1,49 @@
+name: reservations
+
+# Deterministic test of the reservation tools — text mode, no judge LLM needed.
+#
+# Text mode bypasses VAD, STT, and TTS: each `user:` turn is sent as text, so
+# this is the fast inner loop for the bot's decisions. It exercises all three
+# tools in tools.py against the in-memory store, then hangs up.
+#
+# Run it on its own (two terminals, both in server/):
+#
+#   uv run bot.py -t eval                                            # 1: the bot
+#   uv run pipecat eval run evals/scenarios/reservations.yaml -v     # 2: this
+
+scenarios:
+  - name: book_and_update
+    turns:
+      # The bot speaks first on connect; wait for the greeting so we don't barge in.
+      - expect:
+          - event: response
+
+      # Look up the reservation seeded in ReservationStore.
+      - user: "Hi, can you check my reservation? It's under Alice Smith."
+        expect:
+          - event: function_call
+            name: get_reservation
+            args: { name: "Alice Smith" }
+          - event: response
+
+      # Every detail supplied up front, so the bot books without asking again.
+      - user: "Great. Please also book a table for Bob Jones, four people, tomorrow at 6:30pm."
+        expect:
+          - event: function_call
+            name: create_reservation
+            args: { name: "Bob Jones", party_size: 4, time: "18:30" }
+          - event: response
+
+      - user: "Actually, make Bob Jones's reservation five people instead."
+        expect:
+          - event: function_call
+            name: update_reservation
+            args: { party_size: 5 }
+          - event: response
+
+      # The goodbye comes before the tool call: the bot speaks, then hangs up.
+      - user: "That's everything, thanks. Bye!"
+        expect:
+          - event: response
+          - event: function_call
+            name: end_call

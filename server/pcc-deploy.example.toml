@@ -1,0 +1,23 @@
+# Pipecat Cloud deploy config. Copy to pcc-deploy.toml (git-ignored) and edit:
+#
+#   cp pcc-deploy.example.toml pcc-deploy.toml
+#   pipecat cloud deploy
+#
+# Reference: https://docs.pipecat.ai/api-reference/cli/cloud/deploy
+
+agent_name = "deepgram-webinar-demo"
+# Holds DEEPGRAM_API_KEY and OPENAI_API_KEY:
+#   pipecat cloud secrets set deepgram-webinar-demo-secrets --file .env
+secret_set = "deepgram-webinar-demo-secrets"
+agent_profile = "agent-1x"
+
+# Krisp VIVA voice isolation, applied by the KrispVivaFilter in bot.py. "pro" is
+# the WebRTC model (up to 32 kHz), matching the browser clients this agent
+# serves; "tel" is the telephony model.
+[krisp_viva]
+audio_filter = "pro"
+
+# Warm agents kept ready for new sessions. Each one is billed while idle, so
+# raise it for events (a webinar, say) and lower it afterwards.
+[scaling]
+min_agents = 1

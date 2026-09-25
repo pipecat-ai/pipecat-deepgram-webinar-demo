@@ -1,0 +1,19 @@
+# Runs every scenario against bot.py in one command (from server/):
+#
+#   uv run pipecat eval suite evals/manifest.yaml
+#
+# The suite starts the bot itself — a fresh bot per scenario, each on its own
+# port — so nothing has to be running first and no scenario inherits another's
+# context or reservation store. Exits non-zero if any scenario fails.
+#
+# Handy flags: -s <scenario> to run just one, -d to keep full debug logs.
+
+concurrency: 2
+runs_dir: eval-runs # logs -> eval-runs/<timestamp>/
+scenarios_dir: scenarios # scenario names resolve to <dir>/<name>.yaml
+spawn: "{python} {bot} -t eval --port {port}"
+
+suite:
+  - bot: ../bot.py
+    scenarios:
+      - reservations # the reservation tools fire with the right arguments

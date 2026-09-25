@@ -1,0 +1,27 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+.vercel/
+
+# Pipecat evals
+eval-runs/
+*.eval.log
+*.debug.log
+
+# OS / logs
+.DS_Store
+*.log
+
+# Pipecat Cloud (copy server/pcc-deploy.example.toml)
+server/pcc-deploy.toml
