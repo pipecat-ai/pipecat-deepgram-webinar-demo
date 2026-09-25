@@ -7,7 +7,7 @@ import { PhoneOffIcon, PlusIcon } from "lucide-react"
 
 import deepgramLogo from "@/assets/deepgram-logo.svg"
 import pipecatLogo from "@/assets/pipecat-logo.svg"
-import { DialScreen } from "@/components/dial-screen"
+import { ConnectScreen } from "@/components/connect-screen"
 import { Panel } from "@/components/panel"
 import { AudioVisualizerBar } from "@/components/pipecat/audio-visualizer-bar"
 import { AudioVisualizerWave } from "@/components/pipecat/audio-visualizer-wave"
@@ -196,7 +196,7 @@ function AgentCaption({
     )
   }
   const [prefix, action] = {
-    idle: ["not connected — ", "dial a number to talk to the agent"],
+    idle: ["not connected — ", "connect to talk to the agent"],
     starting: ["connecting — ", "negotiating the session"],
     live: ["connected — ", "say something, or type on the right"],
   }[phase]
@@ -263,13 +263,13 @@ function Session({
       </header>
 
       {transportState !== "ready" && (
-        <DialScreen
+        <ConnectScreen
           onConnect={onConnect}
           onDisconnect={onDisconnect}
           error={error}
         />
       )}
-      {/* Keep event subscribers mounted while dialing so the transcript and
+      {/* Keep event subscribers mounted while connecting so the transcript and
           metrics capture the connection and first response before revealing them. */}
       <main
         className={cn(
@@ -376,8 +376,11 @@ function Session({
  * bot in dev, Daily via the start endpoint in production. Resolved once at
  * module load: it reads build-time env, and changing transportType rebuilds
  * the client.
+ *
+ * Devices initialize on load (asking for microphone access) so the connect
+ * screen's pickers list the microphones and speakers before a session starts.
  */
-const SESSION = sessionConfig()
+const SESSION = { ...sessionConfig(), initDevicesOnMount: true }
 
 export function App() {
   const { client, connect, disconnect, error } = usePipecatApp(SESSION)

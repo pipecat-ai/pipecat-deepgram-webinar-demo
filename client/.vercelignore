@@ -1,0 +1,7 @@
+# Local secrets: the deployment reads BOT_START_* from the project's
+# environment variables instead.
+.env
+.env.*
+!.env.example
+node_modules
+dist

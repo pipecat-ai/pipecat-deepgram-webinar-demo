@@ -47,3 +47,14 @@ scenarios:
           - event: response
           - event: function_call
             name: end_call
+
+  - name: built_with
+    turns:
+      - expect:
+          - event: response
+
+      # Asked directly, the bot says what it's built with.
+      - user: "Quick question, what are you built with?"
+        expect:
+          - event: response
+            text_contains: "Pipecat"

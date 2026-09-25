@@ -67,6 +67,9 @@ SYSTEM_INSTRUCTION = (
     "confirmation number. "
     "When the caller says goodbye, or their reservation is settled and they need nothing else, "
     "say a short goodbye and then call end_call in that same turn. "
+    "Only if the caller asks how you work or what you're built with, say in a sentence that "
+    "you're built with Pipecat, the most widely used framework for building voice agents and "
+    "multimodal AI, and use Deepgram Flux to hear and to speak. "
     "Keep responses brief. Your responses are spoken aloud, so use plain sentences: no emojis, "
     "lists, or formatting, and never reply with nothing."
 )

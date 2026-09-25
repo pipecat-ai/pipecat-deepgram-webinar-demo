@@ -41,13 +41,14 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173, enter a few digits on the keypad, and press **Send**. The digits are cosmetic; they just give the demo its dial-in feel. The Vite dev server proxies `/api/offer` to the bot on port 7860.
+Open http://localhost:5173 and allow microphone access. Pick your microphone and speakers, then press **Connect**. The Vite dev server proxies `/api/offer` to the bot on port 7860.
 
 Try:
 
 - "Can you check my reservation? It's under Alice Smith." (a booking seeded for tomorrow)
 - "Book a table for four tomorrow at 7pm under Bob Jones."
 - "Actually, make that five people."
+- "What are you built with?"
 - "That's all, thanks. Bye!" (the agent says goodbye and hangs up)
 
 ## How it works
@@ -76,7 +77,7 @@ Try:
 | Path                              | What it is                                                                                                            |
 | --------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `src/App.tsx`                     | The session layout: agent orb, transcript, tool-call counters, and metrics.                                           |
-| `src/components/dial-screen.tsx`  | The keypad shown before a call, with a local ringback tone while connecting.                                          |
+| `src/components/connect-screen.tsx` | The screen before a call: microphone and speaker pickers plus a connect button, from Pipecat UI. |
 | `src/components/pipecat/`         | Pipecat UI components from the `@pipecat` shadcn registry (`npx shadcn add @pipecat/<name>`), some restyled for the terminal look. |
 | `src/hooks/use-tool-calls.ts`     | Counts each tool call from the bot's RTVI events, and plays the chime.                                                |
 | `src/lib/session-config.ts`       | Picks the transport: SmallWebRTC against a local bot in dev, Daily against Pipecat Cloud in production.               |
